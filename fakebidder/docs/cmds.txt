@@ -1,0 +1,1 @@
+curl  -X  PUT --data "xml=new file" http://localhost:8080/recipes/f
