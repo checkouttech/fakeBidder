@@ -1,2 +1,3 @@
 include fakebidder/images/hello.gif
+include fakebidder/conf/supervisord.conf
 
