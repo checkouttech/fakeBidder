@@ -1,9 +1,5 @@
 
-
 Hello, World! Readme
-
-
-
 
 Build RPM ( only on Linux box ) 
 	
@@ -19,7 +15,16 @@ Build Egg
 
 Install Egg 
 
-	pip install fakebidder-0.13-1.noarch.rpm
-
+	pip install fakebidder-0.13-1.tar.gz
  
+
+Set python path 
+
+	export PYTHONPATH=/usr/lib/python2.7/site-packages/fakebidder/
+
+Supervisor
+
+	supervisord -c supervisord.conf
+	supervisorctl start long_script
+
 
