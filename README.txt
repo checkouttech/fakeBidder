@@ -3,7 +3,7 @@ Hello, World! Readme
 
 Build RPM ( only on Linux box ) 
 	
-	python setup.py sdist
+	python setup.py bdist_rpm
 
 Install RPM
 
