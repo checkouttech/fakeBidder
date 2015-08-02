@@ -18,30 +18,29 @@ import random
 ##########
 
 
-# TODO : return it as a dictionary and not a string 
 def dump_headers():
     headersDict = {}
     headersDict = bottle.request.headers
-    result = ["%s: %s" % (x, bottle.request.headers[x]) for x in bottle.request.headers.keys()]
+    for x in headersDict.keys():
+        print "%s - %s" % ( x , headersDict[x] ) 
+
     #print bottle.request.get_header('host')
     #print bottle.request.headers.keys()
     #print bottle.request.headers['host']
-    return result 
+    return headersDict
 
-# TODO : return it as a dictionary and not a string 
 def dump_cookies():
-    result = ["%s: %s" % (x, bottle.request.cookies[x]) for x in bottle.request.cookies.keys()]
-    result.append('\n')
+    cookiesDict = {}
+    cookiesDict = bottle.request.cookies
     #print bottle.request.cookies.keys()
     #print bottle.request.get_cookie("cookieName")
-    return result
+    return cookiesDict
 
-
-# TODO : return it as a dictionary and not a string 
 def dump_data():
-    result = bottle.request.body.read() 
-    return result
- 
+    dataDict = {}
+    dataDict =  json.loads ( bottle.request.body.read() ) 
+    return dataDict 
+
 def is_valid_json(jsonVariable):
     try:
         json_object = json.loads(jsonVariable) 
@@ -52,7 +51,6 @@ def is_valid_json(jsonVariable):
 
 def get_bid_template():
     # get random bid amount just in case not provided 
-    # var bid = parseFloat(parseInt(Math.random()*10) + "." + parseInt(Math.random()*100000));
 
     bid = 0 
     print bottle.request.get_cookie("returnBidAmount")
@@ -102,12 +100,24 @@ def index(name='World'):
 @bottle.route('/requestdetails', method='POST')
 def print_request_details():
     requestDetails = {}
-    requestDetails['headers'] = {}
     requestDetails['headers'] =  dump_headers()
     requestDetails['cookies'] =  dump_cookies()
     requestDetails['data']    =  dump_data()
+
+    for x in requestDetails.keys():
+       print x ," : "
+       for y in requestDetails[x] :
+           print "    %s ----> %s" % ( y , requestDetails[x][y])
+
+    print type ( requestDetails ) 
+    #print  json.loads( requestDetails['cookies'] )
+    #print  json.dumps( requestDetails['cookies'] ,skipkeys = True ,ensure_ascii=False, sort_keys=True )
+    print dict ( requestDetails ) 
+ 
     bottle.response.content_type = 'application/json'
-    return requestDetails 
+    return "foo"
+    #return json.loads( requestDetails )  
+
    
 
 @bottle.route('/fakebidder/', method='POST')
