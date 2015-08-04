@@ -21,20 +21,17 @@ import random
 def dump_headers():
     headersDict = {}
     headersDict = bottle.request.headers
-    for x in headersDict.keys():
-        print "%s - %s" % ( x , headersDict[x] ) 
-
     #print bottle.request.get_header('host')
     #print bottle.request.headers.keys()
     #print bottle.request.headers['host']
-    return headersDict
+    return dict ( headersDict ) 
 
 def dump_cookies():
     cookiesDict = {}
     cookiesDict = bottle.request.cookies
     #print bottle.request.cookies.keys()
     #print bottle.request.get_cookie("cookieName")
-    return cookiesDict
+    return dict ( cookiesDict)
 
 def dump_data():
     dataDict = {}
@@ -104,21 +101,15 @@ def print_request_details():
     requestDetails['cookies'] =  dump_cookies()
     requestDetails['data']    =  dump_data()
 
-    for x in requestDetails.keys():
-       print x ," : "
-       for y in requestDetails[x] :
-           print "    %s ----> %s" % ( y , requestDetails[x][y])
+    print type ( requestDetails )
+    print  dict ( requestDetails ,skipkeys = True ,ensure_ascii=False, sort_keys=True )
 
-    print type ( requestDetails ) 
-    #print  json.loads( requestDetails['cookies'] )
-    #print  json.dumps( requestDetails['cookies'] ,skipkeys = True ,ensure_ascii=False, sort_keys=True )
-    print dict ( requestDetails ) 
- 
     bottle.response.content_type = 'application/json'
-    return "foo"
-    #return json.loads( requestDetails )  
-
+    return json.dumps ( requestDetails )
    
+
+
+
 
 @bottle.route('/fakebidder/', method='POST')
 def return_bid() :
