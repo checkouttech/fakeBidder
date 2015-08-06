@@ -106,7 +106,6 @@ def print_request_details():
 
     bottle.response.content_type = 'application/json'
     return json.dumps ( requestDetails )
-   
 
 
 
