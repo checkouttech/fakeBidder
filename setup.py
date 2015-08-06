@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='fakebidder',
-    version='0.13',
+    version='0.14',
     license='BSD',
     author='gyeh',
     author_email='hello@world.com',
