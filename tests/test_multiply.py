@@ -1,4 +1,4 @@
-from app.unnecessary_math import *
+from fakebidder.unnecessary_math import *
 
 def test_numbers_3_4():
     assert multiply(3,4) == 12

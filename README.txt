@@ -27,4 +27,13 @@ Supervisor
 	supervisord -c supervisord.conf
 	supervisorctl start long_script
 
+Run pytest
+        
+	Stand alone 
+		py.test -v  --cov=fakebidder   --cov-report html --junitxml results.xml  --html=report.html
+
+      	As part of setup.py 
+		 python setup.py test -a "-v  --cov=fakebidder   --cov-report html --junitxml results.xml  --html=report.html" 
+
+
 
