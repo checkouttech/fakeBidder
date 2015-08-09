@@ -4,6 +4,7 @@ import os
 #from bottle import route, run, request
 import bottle
 import random 
+import sys
 
 
 
@@ -130,9 +131,12 @@ def return_bid() :
 
 
 
+cmdargs = sys.argv
 
+PORT_NUMBER = cmdargs[1] 
+print "\\\\\\\\\\\\\\==================================="
+print PORT_NUMBER 
 
-
-
-bottle.run(host='0.0.0.0', port=10001)
+bottle.run(host='0.0.0.0', port=PORT_NUMBER)
+#bottle.run(host='0.0.0.0', port=10001)
 
