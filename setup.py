@@ -26,10 +26,17 @@ setup(
     author_email='hello@world.com',
     url='http://www.hello.com',
     long_description="README.txt",
-    packages=['fakebidder', 'fakebidder.images','fakebidder.docs','fakebidder.conf'],
+    packages=['fakebidder', 'fakebidder.images','fakebidder.docs'],
     include_package_data=True,
     package_data={'fakebidder.images' : ['hello.gif'],'fakebidder.docs' : ['supervisord.conf']},
+    data_files=[
+                ('/etc/init.d/', ['fakebidder.sh']),
+                ('config', ['conf/supervisord.conf']),
+                ('/etc/fakebidder/',['conf/supervisord.conf'])
+                ],
     description="Hello World testing setuptools",
     tests_require=['pytest'],
     cmdclass = {'test': PyTest}
 )
+
+#data_files=[('config', ['fakebidder/conf/supervisord.conf']),('/etc/init.d', ['init-script'])],
