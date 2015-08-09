@@ -30,7 +30,7 @@ setup(
     include_package_data=True,
     package_data={'fakebidder.images' : ['hello.gif'],'fakebidder.docs' : ['supervisord.conf']},
     data_files=[
-                ('/etc/init.d/', ['fakebidder.sh']),
+                ('/etc/init.d/', ['fakebidderctl']),
                 ('config', ['conf/supervisord.conf']),
                 ('/etc/fakebidder/',['conf/supervisord.conf'])
                 ],

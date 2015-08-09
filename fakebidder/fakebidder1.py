@@ -5,7 +5,7 @@ import os
 import bottle
 import random 
 import sys
-
+import logging
 
 
 ##########
@@ -124,13 +124,22 @@ def return_bid() :
     responseJson = get_bid_template()
     responseBid = populate_bid_template(requestData,responseJson) 
     
+    print2log = "DSP Response : id : ", auction_id ," : " , responseBid
+
+
+    logging.info(print2log)
+    sys.stdout.flush()
     print "DSP Response : id : ", auction_id ," : " , responseBid
 
     return responseBid
 
-
-
-
+logging.basicConfig(  stream=sys.stdout, 
+                      level=logging.INFO,
+                      format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
+                      datefmt='%H:%M:%S')
+logging.info('Watch out!')
+#logging.basicConfig(format=FORMAT,level=logging.INFO,datefmt='%Y-%m-%d %H:%M:%S')
+# format='%(asctime)s %(levelname)s %(message)s',
 cmdargs = sys.argv
 
 PORT_NUMBER = cmdargs[1] 

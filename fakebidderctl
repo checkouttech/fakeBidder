@@ -1,0 +1,67 @@
+#!/bin/bash
+# $Id: $
+ 
+# Fakebidder control script
+# Usage: fakebidderctl start|stop|status
+ 
+fakebidder_start () {
+  supervisord -c /usr/config/supervisord.conf
+  FAKEBIDDER=$1
+  if [ $FAKEBIDDER == "all" ]; then
+     echo "Starting all fakebidders"
+     supervisorctl start  all
+  else
+     echo "Starting only $FAKEBIDDER"
+     supervisorctl start $FAKEBIDDER
+   fi
+}
+
+fakebidder_stop () {
+  FAKEBIDDER=$1
+  if [ $FAKEBIDDER == "all" ]; then
+     echo "Stopping all fakebidders"
+     supervisorctl stop all
+  else
+     echo "Stopping only $FAKEBIDDER"
+     supervisorctl stop $FAKEBIDDER
+   fi
+
+}
+
+ 
+fakebidder_restart () {
+   fakebidder_stop "$@"
+   fakebidder_start "$@"
+}
+
+
+cmd="$1"
+shift
+ 
+case "$cmd" in
+   start)
+       fakebidder_start "$@"
+       exit $?
+       ;;
+   stop)
+       echo $@
+       fakebidder_stop "$@"
+       exit $?
+       ;;
+   restart)
+       fakebidder_stop "$@"
+       fakebidder_start "$@"
+       exit $?
+       ;;
+   status)
+       fakebidder_status
+       exit $?
+       ;;
+   clean)
+       fakebidder_clean
+       exit $?
+       ;;
+   *)
+       echo "Usage: $0 {start|stop|restart|status|clean} [args]"
+       echo 1
+esac
