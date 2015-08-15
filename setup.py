@@ -32,7 +32,7 @@ setup(
     data_files=[
                 ('/etc/init.d/', ['fakebidderctl']),
                 ('config', ['conf/supervisord.conf']),
-		( '/var/logs/fakebidder/', [] ),
+		( '/var/logs/fakebidder/',[]),
                 ('/etc/fakebidder/',['conf/supervisord.conf'])
                 ],
     description="Hello World testing setuptools",
