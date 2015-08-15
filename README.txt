@@ -41,5 +41,6 @@ Run pytest
 # /home/vagrant/sonar/sonar-runner-2.4/bin/sonar-runner
 # sed -i 's/filename="/filename=".\//g' coverage.xml
 
+
 # /home/vagrant/sonar/sonar-runner-2.4/bin/sonar-runner sonar-project.properties
 

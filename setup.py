@@ -28,7 +28,7 @@ setup(
     long_description="README.txt",
     packages=['fakebidder', 'fakebidder.images','fakebidder.docs'],
     include_package_data=True,
-    package_data={'fakebidder.images' : ['hello.gif'],'fakebidder.docs' : ['supervisord.conf']},
+    package_data={'fakebidder.images' : ['hello.gif']},
     data_files=[
                 ('/etc/init.d/', ['fakebidderctl']),
                 ('config', ['conf/supervisord.conf']),
