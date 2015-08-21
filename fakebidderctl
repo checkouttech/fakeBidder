@@ -5,7 +5,7 @@
 # Usage: fakebidderctl start|stop|status
  
 fakebidder_start () {
-  supervisord -c /usr/config/supervisord.conf
+  supervisord -c /etc/fakebidder/conf/supervisord.conf
   FAKEBIDDER=$1
   if [ $FAKEBIDDER == "all" ]; then
      echo "Starting all fakebidders"

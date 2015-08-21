@@ -26,19 +26,19 @@ setup(
     author_email='hello@world.com',
     url='http://www.hello.com',
     long_description="README.txt",
+    install_requires=['bottle','requests','supervisor'],  # currently not working
+    #dependency_links = ['https://pypi.python.org/packages/source/b/bottle/bottle-0.12.8.tar.gz'],
     packages=['fakebidder', 'fakebidder.images','fakebidder.docs'],
     include_package_data=True,
     package_data={'fakebidder.images' : ['hello.gif']},
     data_files=[
                 ('/etc/init.d/', ['fakebidderctl']),
-                ('config', ['conf/supervisord.conf']),
-		( '/var/log/fakebidder',[]),
-                ('/etc/fakebidder/',['conf/supervisord.conf'])
+		('/var/log/fakebidder',[]),
+                ('/etc/fakebidder/conf/',['conf/supervisord.conf'])
                 ],
     description="Hello World testing setuptools",
     tests_require=['pytest'],
     cmdclass = {'test': PyTest}
-    install_requires=['bottle','requests','supervisor']
 )
 
 #data_files=[('config', ['fakebidder/conf/supervisord.conf']),('/etc/init.d', ['init-script'])],
