@@ -26,7 +26,7 @@ setup(
     author_email='hello@world.com',
     url='http://www.hello.com',
     long_description="README.txt",
-    install_requires=['bottle','requests','supervisor'],  # currently not working
+    #install_requires=['bottle','requests','supervisor'],  # currently not working
     #dependency_links = ['https://pypi.python.org/packages/source/b/bottle/bottle-0.12.8.tar.gz'],
     packages=['fakebidder', 'fakebidder.images','fakebidder.docs'],
     include_package_data=True,
