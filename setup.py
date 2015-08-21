@@ -38,6 +38,7 @@ setup(
     description="Hello World testing setuptools",
     tests_require=['pytest'],
     cmdclass = {'test': PyTest}
+    install_requires=['bottle','requests','supervisor']
 )
 
 #data_files=[('config', ['fakebidder/conf/supervisord.conf']),('/etc/init.d', ['init-script'])],

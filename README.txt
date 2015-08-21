@@ -44,3 +44,5 @@ Run pytest
 
 # /home/vagrant/sonar/sonar-runner-2.4/bin/sonar-runner sonar-project.properties
 
+#  pylint --rcfile=pylint.cfg $(find handlers -maxdepth 1 -name "*.py" -print)  --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" > pylint.log || exit 0
+
