@@ -1,11 +1,17 @@
 
 Hello, World! Readme
 
+Clean 
+	python setup.py clean
+
+
 Build RPM ( only on Linux box ) 
 	
 	python setup.py bdist_rpm
         python setup.py bdist_rpm --spec-only  
         python setup.py bdist_rpm --requires=python-bottle,supervisor,python-requests  --release=2
+        python setup.py bdist_rpm --requires=python-bottle,supervisor,python-requests  --release=`git rev-list --count --first-parent HEAD`
+
 
 Install RPM
 
