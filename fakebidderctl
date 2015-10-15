@@ -5,14 +5,14 @@
 # Usage: fakebidderctl start|stop|status
  
 fakebidder_start () {
-  supervisord -c /etc/fakebidder/conf/supervisord.conf
+  #####supervisord -c /etc/fakebidder/conf/supervisord.conf
   FAKEBIDDER=$1
   if [ $FAKEBIDDER == "all" ]; then
      echo "Starting all fakebidders"
-     supervisorctl start  all
+     supervisorctl -c $CONF start  all
   else
      echo "Starting only $FAKEBIDDER"
-     supervisorctl start $FAKEBIDDER
+     supervisorctl -c $CONF start $FAKEBIDDER
    fi
 }
 
@@ -20,10 +20,10 @@ fakebidder_stop () {
   FAKEBIDDER=$1
   if [ $FAKEBIDDER == "all" ]; then
      echo "Stopping all fakebidders"
-     supervisorctl stop all
+     supervisorctl -c $CONF stop all
   else
      echo "Stopping only $FAKEBIDDER"
-     supervisorctl stop $FAKEBIDDER
+     supervisorctl -c $CONF stop $FAKEBIDDER
    fi
 
 }

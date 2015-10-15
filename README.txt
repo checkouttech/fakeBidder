@@ -35,6 +35,11 @@ Supervisor
 	supervisord -c supervisord.conf
 	supervisorctl start long_script
 
+        Using fakebidderctl 
+		sudo sh /etc/init.d/fakebidderctl  start all
+		sudo sh /etc/init.d/fakebidderctl  stop all
+
+
 Run pytest
         
 	Stand alone 
