@@ -55,8 +55,8 @@ def return_bid() :
     else:
         return "ERROR: bad JSON"
      
-    responseJson = get_bid_template()
-    responseBid = populate_bid_template(requestData,responseJson) 
+    responseBidTemplate = get_bid_template()
+    responseBid = populate_bid_template(requestData,responseBidTemplate) 
     
     print2log = "DSP Response : id : ", fakebidder.auction_id ," : " , responseBid
 

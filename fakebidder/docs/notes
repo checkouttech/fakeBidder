@@ -1,0 +1,24 @@
+
+pytest 
+bottle 
+json 
+requets
+setuptools
+supervisor
+
+
+sudo systemctl restart memcached
+
+sudo systemctl stop firewalld
+
+client - 192.168.150.110
+
+	sudo yum install python-memcached
+
+
+
+
+
+
+
+
