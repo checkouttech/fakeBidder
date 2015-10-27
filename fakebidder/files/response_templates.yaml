@@ -1,0 +1,27 @@
+responseTemplate  : 
+           id :  auctionId
+           seatbid :  
+                   -  seat : testseat
+                   -   bid : 
+                          - id :  required id per 4.3.3 
+                            impid : impid per 4.3.3
+                            adomain : [ gawker ]
+                            price : BID_PRICE
+                            ext: { creativeapi: 3 }
+                            adm: <img src=\"http://www.foo.com/wp-content/themes/foo/images/ftr_icon.png?auction=${AUCTION_ID}&price=${AUCTION_PRICE:BF}\">
+                            crid: 12345678
+
+                          - foo :  required id per 4.3.3 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
