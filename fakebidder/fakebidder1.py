@@ -16,10 +16,6 @@ from fakebidder import *
 
 global auction_id
 
-########## 
-# Functions , TODO :  Will be moved to a module 
-##########
-
 #############
 # End points 
 ############
@@ -31,42 +27,80 @@ def index(name='World'):
 
 @bottle.route('/requestdetails', method='POST')
 def print_request_details():
-    requestDetails = {}
-    requestDetails['headers'] =  dump_headers()
-    requestDetails['cookies'] =  dump_cookies()
-    requestDetails['data']    =  dump_data()
 
-    print type ( requestDetails )
-    print  dict ( requestDetails ,skipkeys = True ,ensure_ascii=False, sort_keys=True )
+    bidrequest = requestClass(bottle.request)
+    requestDetails =  bidrequest.getDetails()
 
-    bottle.response.content_type = 'application/json'
-    return json.dumps ( requestDetails )
+    bidresponse = responseClass(bottle.response) 
+    bidresponse.set_response(requestDetails) 
 
+    bidresponse.content_type = 'application/json'
+    return json.dumps ( bidresponse.get_response() )
 
 
 
 @bottle.route('/fakebidder/', method='POST')
 def return_bid() :
-    requestData = bottle.request.body.read()
+
+    bidrequest = requestClass(bottle.request)
+
+    bidresponse = responseClass(bottle.response) 
+
+    bidresponse.get_bid_template()    # TODO : move into bid template 
+    bidresponse.createResponse(bidrequest)
+    
+    return json.dumps ( bidresponse.bidResponse ) 
+
+
+#%
+#%    print2log = "DSP Response : id : ", fakebidder.auction_id ," : " , responseBid
+#%
+#%    logging.info(print2log)
+#%    sys.stdout.flush()
+#%    print "DSP Response : id : ", fakebidder.auction_id ," : " , responseBid
+#%
+#%    #logger = loggingClass()
+#%
+#%    bidresponse.set_response(responseBid) 
+#%
+#%    bidresponse.content_type = 'application/json'
+#%    return json.dumps ( bidresponse.get_response() )
+
+    #requestDetails =  bidrequest.getDetails()
+    #requestData = json.dumps ( requestDetails['data'] ) 
+
+    #bidresponse.set_response(requestDetails) 
+
+    #print " print the object ------> " , bidrequest.printRequest()
+
+    #print "getDetails function ---->   " , bidrequest.getDetails()
+    #print "requestDetails variable ----> " , bidrequest.requestDetails 
+
+    #requestData = bottle.request.body.read()
+
+    #print "requestData direct " , requestData
 
     #check if valid json 
-    if ( is_valid_json(requestData)) :
-        postdata = bottle.request.body.read()
-    else:
-        return "ERROR: bad JSON"
+    #if ( is_valid_json(requestData)) :
+    #    postdata = bottle.request.body.read()
+    #else:
+    #    return "ERROR: bad JSON"
      
-    responseBidTemplate = get_bid_template()
-    responseBid = populate_bid_template(requestData,responseBidTemplate) 
-    
-    print2log = "DSP Response : id : ", fakebidder.auction_id ," : " , responseBid
+    #if ( bidrequest.is_valid_data(requestDetails['data'])):
+    #    print  "valid json " 
+    #else :
+    #     return "ERROR: bad JSON"
+
+    #responseBidTemplate = get_bid_template()
+
+    #responseBidTemplate = bidresponse.get_bid_template()
+
+    #responseBid = populate_bid_template(requestData,responseBidTemplate) 
+    #responseBid = populate_bid_template(requestDetails['data'] , bidresponse.get_bid_template()) 
+    #return responseBid
 
 
-    logging.info(print2log)
-    sys.stdout.flush()
-    print "DSP Response : id : ", fakebidder.auction_id ," : " , responseBid
-
-    return responseBid
-
+   
 logging.basicConfig(  stream=sys.stdout, 
                       level=logging.INFO,
                       format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
@@ -84,3 +118,4 @@ print fakebidder.hello()
 bottle.run(host='0.0.0.0', port=PORT_NUMBER)
 #bottle.run(host='0.0.0.0', port=10001)
 
+    #print  dict ( requestDetails ,skipkeys = True ,ensure_ascii=False, sort_keys=True )
