@@ -1,5 +1,11 @@
 #!/usr/bin/python
 # Filename: fakebidder.py
+
+
+###########################################################
+### PACKAGES
+############################################################
+
 import json
 import os
 #import requests
@@ -9,6 +15,24 @@ import random
 import sys
 import logging
 import memcache
+
+
+os.putenv('PYTHONUNBUFFERED', 'enabled')
+sys.stdout.flush()
+
+
+
+
+#import bottle
+
+
+#import json
+#import os
+#import requests
+#from bottle import route, run, request
+#import random 
+#import sys
+#import logging
 
 
 ## Global variable 
@@ -45,7 +69,6 @@ class requestClass():
         self.requestDetails['headers'] = dict( bottle.request.headers ) 
         self.requestDetails['cookies'] = dict( bottle.request.cookies ) 
         self.requestDetails['data']    =  json.loads ( bottle.request.body.read() ) 
-
 
 
     def printRequest(self):
@@ -113,7 +136,13 @@ class responseClass():
         return self.bidResponseTemplate
 
 
-    def createResponse(self,bidrequest):
+    def createDetailsResponse(self,bidrequest):
+
+        # bid response template 
+        self.bidResponse  = bidrequest.requestDetails
+
+
+    def createBidResponse(self,bidrequest):
 
         # populate bid price 
         if ( 'userID' in bidrequest.requestDetails['data'] ) :
@@ -127,6 +156,10 @@ class responseClass():
 
         else :  # return randon bid price
             bid = random.uniform(1, 10)
+
+
+        #  populate bidResponseTemplate variable 
+        self.get_bid_template()
 
         # bid response template 
         self.bidResponse  = self.bidResponseTemplate

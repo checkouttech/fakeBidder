@@ -1,20 +1,21 @@
-import json
-import os
-#import requests
-#from bottle import route, run, request
-import bottle
-import random 
-import sys
-#import logging
+#!/usr/bin/env python
+
+
+# Import fakebidder module 
 import fakebidder 
 from fakebidder import *
-
 
 ##########
 # Global variable 
 #########
 
-#global auction_id
+#global variable_name
+
+
+
+
+
+
 
 #############
 # End points 
@@ -29,13 +30,15 @@ def index(name='World'):
 def print_request_details():
 
     bidrequest = requestClass(bottle.request)
-    requestDetails =  bidrequest.getDetails()
 
     bidresponse = responseClass(bottle.response) 
-    bidresponse.set_response(requestDetails) 
+
+    bidresponse.createDetailsResponse(bidrequest)
 
     bidresponse.content_type = 'application/json'
-    return json.dumps ( bidresponse.get_response() )
+
+    return json.dumps ( bidresponse.bidResponse ) 
+
 
 
 
@@ -46,12 +49,13 @@ def return_bid() :
 
     bidresponse = responseClass(bottle.response) 
 
-    bidresponse.get_bid_template()    # TODO : move into bid template 
-    bidresponse.createResponse(bidrequest)
+    #bidresponse.get_bid_template()    # TODO : move into bid template 
+    bidresponse.createBidResponse(bidrequest)
 
     mylogger = mycustomelogger()
     mylogger.info(bidresponse.bidResponse) 
    
+    bidresponse.content_type = 'application/json'
     return json.dumps ( bidresponse.bidResponse ) 
 
 
