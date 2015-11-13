@@ -15,40 +15,21 @@ import random
 import sys
 import logging
 import memcache
-
+import argparse 
+import ConfigParser
 
 os.putenv('PYTHONUNBUFFERED', 'enabled')
 sys.stdout.flush()
 
-
-
-
-#import bottle
-
-
-#import json
-#import os
-#import requests
-#from bottle import route, run, request
-#import random 
-#import sys
-#import logging
-
-
-## Global variable 
-global memcache_host
-memcache_host = "192.168.150.110"
-global memcache_port
-memcache_port = "11211"
- 
-
 ##  Classes 
 
 class memcacheConnection():
-    def __init__(self):
+    def __init__(self,memcache_host,memcache_port):
+
+        print "initializing memcache" 
+        print "memcache_host-->" , memcache_host ,  "  memcache_port " , memcache_port
         memcache_details = memcache_host  +":"+ memcache_port
         self.connection = memcache.Client([memcache_details], debug=0)
-        print "initializing memcache" 
      
     def setValue(self,key,value):
         self.connection.set(key,value)
@@ -61,6 +42,64 @@ class memcacheConnection():
         return value 
 
 
+class setupClass():
+
+    #args = ""
+
+    def __init__(self):
+        self.args = self.parse_arguments()
+    
+        # declaring global object for memcache # TODO do same for logger
+        global memobj 
+        memobj = memcacheConnection(self.args.memcache_host, self.args.memcache_port) 
+
+        #global mylogger
+        #mylogger = mycustomelogger()
+
+
+    def parse_arguments(self):
+        
+        #global args 
+        conf_parser = argparse.ArgumentParser(
+            # Turn off help, so we print all options in response to -h
+                add_help=False
+                )
+        conf_parser.add_argument("-c", "--conf_file", help="Specify config file", metavar="FILE")
+     
+        args, remaining_argv = conf_parser.parse_known_args()
+        
+        print "remaining_argv ...", remaining_argv
+        
+        defaults = {}
+    
+        if args.conf_file:
+            config = ConfigParser.SafeConfigParser()
+            config.read([args.conf_file])
+            defaults = dict(config.items("Defaults"))
+           
+        # Don't surpress add_help here so it will handle -h
+        parser = argparse.ArgumentParser(
+            # Inherit options from config_parser
+            parents=[conf_parser],
+            # print script description with -h/--help
+            description=__doc__,
+            # Don't mess with format of description
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            ) 
+            
+        parser.set_defaults(**defaults)
+        parser.add_argument('-p','--port',action="store",  help='Port for fake bidder', required=True, type=int )
+        #parser.add_argument('-p','--port',action="store",  help='Port for fake bidder', type=int )
+        args = parser.parse_args(remaining_argv)
+        print args
+        return args
+    
+
+
+
+
+
+ 
 class requestClass():
 
     def __init__(self,bottleRequestObject):
@@ -174,7 +213,7 @@ class responseClass():
 def mycustomelogger():
 
     #create logger with "spam_application"
-    logger = logging.getLogger("spam_application")
+    logger = logging.getLogger("main")
     logger.setLevel(logging.DEBUG)
     
     #create file handler and set level to debug
@@ -197,17 +236,12 @@ def mycustomelogger():
     return logging 
     #return logger 
     
-
 ## Declaring global objects
-global memobj 
-memobj = memcacheConnection() 
- 
 
 
 def hello():
     print 'Hi, this is mymodule speaking.'
 
-# End of mymodule.py
 
 def is_valid_json(jsonVariable):
     try:
@@ -216,60 +250,7 @@ def is_valid_json(jsonVariable):
         return False
     return True 
 
-#%
-#%def get_bid_template():
-#%    #  will eventually come from a yaml template file 
-#%    bidResponseTemplate  = {
-#%           "id": "auctionId",
-#%           "seatbid": [ {
-#%                 "seat":"testseat",
-#%                 "bid": [ {
-#%                         "id": "required id per 4.3.3",
-#%                         "impid": "impid per 4.3.3",
-#%                         "adomain": [ "gawker" ],
-#%                         "price": "BID_PRICE",
-#%                         "ext": { "creativeapi": 3 },
-#%                         "adm": "<img src=\"http://www.foo.com/wp-content/themes/foo/images/ftr_icon.png?auction=${AUCTION_ID}&price=${AUCTION_PRICE:BF}\">",
-#%                         "crid": "12345678"
-#%                        } ]
-#%                      } ]
-#%         }
-#%    return bidResponseTemplate
-#%
-#%def populate_bid_template(requestData, responseJsonTemplate):
-#%    global auction_id
-#%    
-#%    # convert json to a dictionary 
-#%    ### requestDataDict = json.loads(requestData) 
-#%    requestDataDict = requestData
-#%
-#%    # get auction id from bid request and set it in response
-#%    auction_id =  requestDataDict['auction_id']  
-#%    responseJsonTemplate['id'] = auction_id 
-#%
-#%    # popupate bid price 
-#%    bid = 0 
-#%    print bottle.request.get_cookie("returnBidAmount")
-#%
-#%
-#%    if ( 'userID' in requestDataDict ) :  # if request contains userID 
-#%        # TODO : if network-userID key present in KV
-#%        userID = requestDataDict['userID']
-#%        userKV = memobj.getValue(userID)
-#%        bid = userKV['returnBidAmount']
-#%  
-#%    elif (  bottle.request.get_cookie("returnBidAmount") ) :  # if return bid price present in bid request cookie , use it
-#%        bid = bottle.request.get_cookie("returnBidAmount")
-#%
-#%    else :  # return randon bid price  
-#%        bid = random.uniform(1, 10)
-#% 
-#%    # set the bid in response 
-#%    responseJsonTemplate['seatbid'][0]['bid'][0]['price'] = bid 
-#% 
-#%    return responseJsonTemplate
-#%
-#%
+# End of mymodule.py
 
 def ifBuyerIdPresent ():
     pass 
