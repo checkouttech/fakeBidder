@@ -4,7 +4,8 @@
 # Import fakebidder module 
 import fakebidder 
 from fakebidder import *
-
+ 
+import statsd
 
 ##########
 # Global variable 
@@ -12,6 +13,8 @@ from fakebidder import *
 
 #global args 
 global mylogger
+global l 
+global mydebuglogger
 
 #############
 # End points 
@@ -45,8 +48,23 @@ def return_bid() :
 
     bidresponse.createBidResponse(bidrequest)
 
-    mylogger.info(bidresponse.bidResponse) 
-   
+
+    # log info 
+    mylogger.debugLogger.info(bidresponse.bidResponse) 
+    mylogger.recordsLogger.info(bidresponse.bidResponse) 
+
+
+
+    #feedGraphite
+    network_id = "fb1"
+    metric_name =   'fakebidder.'+  network_id + '.sum_bids_received'  
+    print bidresponse.bidResponse['seatbid'][0]['bid'][0]['price']
+    bidAmount = bidresponse.bidResponse['seatbid'][0]['bid'][0]['price']
+
+    feedGraphite.connection.incr(metric_name, count=bidAmount)    
+
+  
+
     bidresponse.content_type = 'application/json'
     return json.dumps ( bidresponse.bidResponse ) 
 
@@ -56,9 +74,15 @@ def main():
     setupObj = setupClass()
 
     global mylogger
-    mylogger = mycustomelogger()
+    mylogger = loggerClass(setupObj) 
+    #mydebuglogger = loggerClass(setupObj) 
 
- 
+    #mylogger.logger.info ("this is logger speaking ") 
+
+
+    global feedGraphite
+    feedGraphite =  graphiteClass(setupObj)
+
     PORT_NUMBER=setupObj.args.port  
     print " port id from the args object "   , setupObj.args  
 

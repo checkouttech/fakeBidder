@@ -17,7 +17,10 @@ import logging
 import memcache
 import argparse 
 import ConfigParser
-
+import socket
+import time
+import statsd    
+ 
 os.putenv('PYTHONUNBUFFERED', 'enabled')
 sys.stdout.flush()
 
@@ -210,32 +213,143 @@ class responseClass():
         self.bidResponse['seatbid'][0]['bid'][0]['price'] = bid 
 
 
-def mycustomelogger():
+class graphiteClass(object):
 
-    #create logger with "spam_application"
-    logger = logging.getLogger("main")
-    logger.setLevel(logging.DEBUG)
+    def __init__(self,setupObj):
+        statsd_host = setupObj.args.statsd_host
+        statsd_port = setupObj.args.statsd_port 
+
+        # memobj = memcacheConnection(self.args.memcache_host, self.args.memcache_port) 
+        print "initializing statsd connection" 
+        print "statsd_host-->" , statsd_host ,  "  statsd_port " , statsd_port
+        self.connection = None
+        try:
+            self.connection = statsd.StatsClient(
+               host = statsd_host, 
+               port = statsd_port)
     
-    #create file handler and set level to debug
-    fh = logging.FileHandler("spam.log")
-    fh.setLevel(logging.DEBUG)
-    
-    #create formatter
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s -  %(message)s")
-    #add formatter to fh
-    fh.setFormatter(formatter)
-    
-    #add fh to logger
-    logger.addHandler(fh)
-    
-    logging.basicConfig(  stream=sys.stdout, 
-                      level=logging.INFO,
-                      format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
-                      datefmt='%H:%M:%S')
-    
-    return logging 
-    #return logger 
-    
+        except:
+            print "Couldn't connect to %(server)s on port %(port)d" % {'server':statsd_host, 'port':statsd_host}
+ 
+
+
+
+class loggerClass(object):
+
+    def __init__(self,setupObj):
+        debug_log_filename =  setupObj.args.debug_log_filename
+        debug_log_level    = setupObj.args.debug_log_level
+        debug_log_format   = setupObj.args.debug_log_format
+
+        self.debugLogger = logging.getLogger(__name__) 
+        hdlr = logging.FileHandler(debug_log_filename)
+        print "logging format -------> ", debug_log_format
+        formatter = logging.Formatter(debug_log_format)
+        hdlr.setFormatter(formatter)
+        self.debugLogger.addHandler(hdlr) 
+        self.debugLogger.setLevel(logging.DEBUG)
+   
+        #formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+
+        records_log_filename =  setupObj.args.records_log_filename
+        records_log_level    = setupObj.args.records_log_level
+        records_log_format   = setupObj.args.records_log_format
+
+        self.recordsLogger = logging.getLogger(__name__) 
+        hdlr = logging.FileHandler(records_log_filename)
+        print "logging format -------> ", records_log_format
+        formatter = logging.Formatter(records_log_format)
+        hdlr.setFormatter(formatter)
+        self.recordsLogger.addHandler(hdlr) 
+        self.recordsLogger.setLevel(logging.DEBUG)
+ 
+
+
+
+
+
+        #debug_log_filename = fakebidder.debug.log
+        #debug_log_level    = logging.DEBUG
+        #debug_log_format   = %%(asctime)s %%(levelname)s %%(message)s
+ 
+        # l = logging.FileHandler('logfile.log')
+  
+        #self.logger = logging.basicConfig(  stream=sys.stdout, 
+        #                    level=logging.INFO,
+        #                    format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
+        #                    datefmt='%H:%M:%S')
+###        self.recordLogger = logging.getLogger(__name__) 
+###        hdlr = logging.FileHandler('recordfile.log')
+###        formatter = logging.Formatter('%(asctime)s,%(message)s')
+###        hdlr.setFormatter(formatter)
+###        self.recordLogger.addHandler(hdlr) 
+###        self.recordLogger.setLevel(logging.DEBUG)
+###    
+###        print self.debugLogger  
+
+###
+###def mycustomelogger():
+###
+###    #create logger with "spam_application"
+###    logger = logging.getLogger("main")
+###    logger.setLevel(logging.DEBUG)
+###    
+###    #create file handler and set level to debug
+###    fh = logging.FileHandler("spam.log")
+###    fh.setLevel(logging.DEBUG)
+###    
+###    #create formatter
+###    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s -  %(message)s")
+###    #add formatter to fh
+###    fh.setFormatter(formatter)
+###    
+###    #add fh to logger
+###    logger.addHandler(fh)
+###    
+###    logging.basicConfig(  stream=sys.stdout, 
+###                      level=logging.INFO,
+###                      format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
+###                      datefmt='%H:%M:%S')
+###    
+###    return logging 
+###    #return logger 
+###    
+
+
+
+
+
+
+
+###
+###def graphitelogger(setupObj):
+###    #feedGraphite
+###
+###    ### graphite thingy 
+###    STATSD_SERVER = '192.168.150.104'
+###    STATSD_PORT = 8125
+###    
+###    network_id = "fb1"
+###    metric_name =   'fakebidder.'+  network_id + '.sum_bids_received'  
+###    c = None  
+###
+###    try:
+###        c = statsd.StatsClient(
+###           host = STATSD_SERVER, 
+###           port = STATSD_PORT)
+###
+###        #c.incr(metric_name, count=500)
+###    except:
+###        print "Couldn't connect to %(server)s on port %(port)d" % {'server':STATSD_SERVER, 'port':STATSD_PORT}
+###        #sys.exit(1)
+###    finally:
+###        pass     
+###      
+###    print  metric_name
+###    return c 
+###
+
+
 ## Declaring global objects
 
 
