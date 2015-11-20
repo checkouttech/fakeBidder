@@ -52,7 +52,7 @@ setup(
     data_files=[
                 ('/etc/init.d/', ['fakebidderctl']),
 		('/var/log/fakebidder',[]),
-                ('/etc/fakebidder/conf/',['conf/supervisord.conf'])
+                ('/etc/fakebidder/conf/',['conf/supervisord.conf','conf/fakebidder.conf'])
                 ],
     description="Hello World testing setuptools",
     tests_require=['pytest'],

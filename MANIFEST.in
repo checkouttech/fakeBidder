@@ -1,3 +1,4 @@
 include fakebidder/images/hello.gif
 include conf/supervisord.conf
+include conf/fakebidder.conf
 include fakebidderctl

@@ -34,6 +34,8 @@ def print_request_details():
 
     bidresponse.createDetailsResponse(bidrequest)
 
+    mylogger.debugLogger.info(bidresponse.bidResponse) 
+
     bidresponse.content_type = 'application/json'
 
     return json.dumps ( bidresponse.bidResponse ) 
@@ -86,7 +88,8 @@ def main():
     PORT_NUMBER=setupObj.args.port  
     print " port id from the args object "   , setupObj.args  
 
-    bottle.run(host='0.0.0.0', port=PORT_NUMBER)
+    #quiet=True to suppress info message on every request 
+    bottle.run(host='0.0.0.0', port=PORT_NUMBER, quiet=True)
 
 
 if __name__ == "__main__":
