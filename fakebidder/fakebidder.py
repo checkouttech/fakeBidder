@@ -92,6 +92,8 @@ class setupClass():
             
         parser.set_defaults(**defaults)
         parser.add_argument('-p','--port',action="store",  help='Port for fake bidder', required=True, type=int )
+        parser.add_argument('-dl','--debug_log_filename',action="store",  help='Debug log filename')
+        parser.add_argument('-rl','--records_log_filename',action="store",  help='Records log filename')
         #parser.add_argument('-p','--port',action="store",  help='Port for fake bidder', type=int )
         args = parser.parse_args(remaining_argv)
         print args
