@@ -239,55 +239,36 @@ class graphiteClass(object):
 class loggerClass(object):
 
     def __init__(self,setupObj):
-        debug_log_filename =  setupObj.args.debug_log_filename
+        debug_log_filename = setupObj.args.debug_log_filename
         debug_log_level    = setupObj.args.debug_log_level
         debug_log_format   = setupObj.args.debug_log_format
 
-        self.debugLogger = logging.getLogger(__name__) 
-        hdlr = logging.FileHandler(debug_log_filename)
-        print "logging format -------> ", debug_log_format
-        formatter = logging.Formatter(debug_log_format)
-        hdlr.setFormatter(formatter)
-        self.debugLogger.addHandler(hdlr) 
+
+        self.debugLogger = logging.getLogger("debug_log")
         self.debugLogger.setLevel(logging.DEBUG)
-   
-        #formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+ 
+        # create console handler and set level to info
+        handler = logging.FileHandler(debug_log_filename)
+        handler.setLevel(logging.getLevelName(debug_log_level))
+        formatter = logging.Formatter(debug_log_format)
+        handler.setFormatter(formatter)
+        self.debugLogger.addHandler(handler)
+
 
         records_log_filename =  setupObj.args.records_log_filename
         records_log_level    = setupObj.args.records_log_level
         records_log_format   = setupObj.args.records_log_format
 
-        self.recordsLogger = logging.getLogger(__name__) 
-        hdlr = logging.FileHandler(records_log_filename)
-        print "logging format -------> ", records_log_format
-        formatter = logging.Formatter(records_log_format)
-        hdlr.setFormatter(formatter)
-        self.recordsLogger.addHandler(hdlr) 
+        self.recordsLogger = logging.getLogger("records_log")
         self.recordsLogger.setLevel(logging.DEBUG)
- 
+        # create console handler and set level to info
+        handler = logging.FileHandler(records_log_filename)
+        handler.setLevel(logging.getLevelName(records_log_level))
+        formatter = logging.Formatter(records_log_format)
+        handler.setFormatter(formatter)
+        self.recordsLogger.addHandler(handler)
 
 
-
-
-
-        #debug_log_filename = fakebidder.debug.log
-        #debug_log_level    = logging.DEBUG
-        #debug_log_format   = %%(asctime)s %%(levelname)s %%(message)s
- 
-        # l = logging.FileHandler('logfile.log')
-  
-        #self.logger = logging.basicConfig(  stream=sys.stdout, 
-        #                    level=logging.INFO,
-        #                    format= '[%(asctime)s %(levelname)s] {%(pathname)s:%(lineno)d} - %(message)s',
-        #                    datefmt='%H:%M:%S')
-###        self.recordLogger = logging.getLogger(__name__) 
-###        hdlr = logging.FileHandler('recordfile.log')
-###        formatter = logging.Formatter('%(asctime)s,%(message)s')
-###        hdlr.setFormatter(formatter)
-###        self.recordLogger.addHandler(hdlr) 
-###        self.recordLogger.setLevel(logging.DEBUG)
-###    
-###        print self.debugLogger  
 
 ###
 ###def mycustomelogger():

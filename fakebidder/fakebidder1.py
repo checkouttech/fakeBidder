@@ -34,7 +34,8 @@ def print_request_details():
 
     bidresponse.createDetailsResponse(bidrequest)
 
-    mylogger.debugLogger.info(bidresponse.bidResponse) 
+    print mylogger.debugLogger.getEffectiveLevel() 
+    mylogger.debugLogger.debug(bidresponse.bidResponse) 
 
     bidresponse.content_type = 'application/json'
 
@@ -52,10 +53,7 @@ def return_bid() :
 
 
     # log info 
-    mylogger.debugLogger.info(bidresponse.bidResponse) 
     mylogger.recordsLogger.info(bidresponse.bidResponse) 
-
-
 
     #feedGraphite
     network_id = "fb1"
