@@ -21,6 +21,10 @@ import socket
 import time
 import statsd    
  
+
+
+global mylogger
+
 os.putenv('PYTHONUNBUFFERED', 'enabled')
 sys.stdout.flush()
 
@@ -267,6 +271,17 @@ class loggerClass(object):
         formatter = logging.Formatter(records_log_format)
         handler.setFormatter(formatter)
         self.recordsLogger.addHandler(handler)
+
+    def log_records(self,bidresponse):
+        # log info 
+        network_id = "fb1"
+        metric_name =   'fakebidder.'+  network_id + '.sum_bids_received'  
+
+        id = bidresponse.bidResponse['id']
+        bidAmount = bidresponse.bidResponse['seatbid'][0]['bid'][0]['price']
+       
+        #global mylogger
+        self.recordsLogger.info(id +","+ str(bidAmount)) 
 
 
 

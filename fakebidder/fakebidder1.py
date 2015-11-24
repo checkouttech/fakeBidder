@@ -51,9 +51,8 @@ def return_bid() :
 
     bidresponse.createBidResponse(bidrequest)
 
-
-    # log info 
-    mylogger.recordsLogger.info(bidresponse.bidResponse) 
+    # log records info 
+    mylogger.log_records(bidresponse)
 
     #feedGraphite
     network_id = "fb1"
