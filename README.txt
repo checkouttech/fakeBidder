@@ -12,6 +12,8 @@ Build RPM ( only on Linux box )
         python setup.py bdist_rpm --requires=python-bottle,supervisor,python-requests  --release=2
         python setup.py bdist_rpm --requires=python-bottle,supervisor,python-requests  --release=`git rev-list --count --first-parent HEAD`
 
+        # Important : --python ensure the package portability to a regular python env
+        python setup.py bdist_rpm  --python=&quot;/usr/bin/python&quot
 
 Install RPM
 
@@ -78,6 +80,7 @@ pip notes
 #  pylint --rcfile=pylint.cfg $(find handlers -maxdepth 1 -name "*.py" -print)  --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" > pylint.log || exit 0
 
 
-
+# to get the files associated with the package 
 rpm -ql  fakebidder
+rpm -qlp package.rpm 
 
